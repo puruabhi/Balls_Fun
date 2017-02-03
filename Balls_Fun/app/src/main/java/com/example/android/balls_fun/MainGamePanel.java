@@ -2,10 +2,12 @@ package com.example.android.balls_fun;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -34,7 +36,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         // adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
         // create ball and load bitmap
-        ball = new Ball(BitmapFactory.decodeResource(getResources(),R.drawable.ball),50,50);
+        ball = new Ball(getBitmap(R.drawable.ball4),50,50);
         // create the game loop thread
         thread = new MainThread(getHolder(),this);
         // make the GamePanel focusable so it can handle events
@@ -125,5 +127,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void update(){
 
+    }
+
+    private Bitmap getBitmap(int drawableRes) {
+        Drawable drawable = getResources().getDrawable(drawableRes);
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 }
