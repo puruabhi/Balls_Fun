@@ -1,2 +1,3 @@
-# Balls_Fun
-code.fun.do submission game
+# BouncingBall
+
+Trying to run what Kari Laitinen had made in his video https://www.youtube.com/watch?v=10EFBcqXNFg using his code from http://www.naturalprogramming.com/android/
