@@ -134,14 +134,27 @@ public class MovingBall {
 
         System.out.println(x);
         System.out.println(y);
+        System.out.println("Direction: "+movingDirection);
 
-        if(y<=(ball.getHeight())/2) movingDirection = 2 * (float) Math.PI - movingDirection;
-        if (x <= (ball.getWidth()/2)) {
-            movingDirection = (float) Math.PI - movingDirection ;
-            if(movingDirection<0)movingDirection+=2*(float)Math.PI;
+        if(y-(ball.getHeight())/2<=0) {
+            if(movingDirection>=(float)Math.PI&&movingDirection<=2*(float)Math.PI) {
+                System.out.println("1" + (y - (ball.getHeight()) / 2 <= 0));
+                movingDirection = 2 * (float) Math.PI - movingDirection;
+            }
         }
-        if(y+(ball.getHeight())/2>=HEIGHT) movingDirection = 2 * (float) Math.PI - movingDirection;
+        if (x - (ball.getWidth()/2)<=1) {
+            if(2*movingDirection>=(float)Math.PI&&(2*movingDirection)<=3*(float)Math.PI) {
+                System.out.println("2" + (x - (ball.getWidth() / 2) <= 0));
+                movingDirection = (float) Math.PI - movingDirection;
+                if (movingDirection < 0) movingDirection += 2 * (float) Math.PI;
+            }
+        }
+        if(y+(ball.getHeight()/2)>=HEIGHT) {
+            System.out.println("3"+(y+(ball.getHeight()/2)>=HEIGHT));
+            movingDirection = 2 * (float) Math.PI - movingDirection;
+        }
         if (x+(ball.getWidth()/2)>=WIDTH){
+            System.out.println("4"+(x+(ball.getWidth()/2)>=WIDTH));
             movingDirection = (float) Math.PI - movingDirection ;
             if(movingDirection<0)movingDirection+=2*(float)Math.PI;
         }

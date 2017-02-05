@@ -35,6 +35,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private Ball ball;
     private ArrayList<MovingBall> movingBallArrayList;
 
+    private int numberOfBalls = 5;
+
     Context context;
 
     public MainGamePanel(Context context) {
@@ -53,10 +55,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         ball = new Ball(getBitmap(R.drawable.ball4),50,50);
-        MovingBall movingBall = new MovingBall(getBitmap(R.drawable.ball5),getWidth()/2,getHeight()/2,getWidth(),getHeight());
-        movingBallArrayList.add(movingBall);
-        movingBall = new MovingBall(getBitmap(R.drawable.ball5),getWidth()/2,getHeight()/2,getWidth(),getHeight());
-        movingBallArrayList.add(movingBall);
+        for(int i=0;i<numberOfBalls;i++){
+            MovingBall movingBall = new MovingBall(getBitmap(R.drawable.ball5),20,getHeight()/2,getWidth(),getHeight());
+            movingBallArrayList.add(movingBall);
+        }
         thread.setRunning(true);
         thread.start();
 
