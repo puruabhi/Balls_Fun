@@ -1,37 +1,71 @@
 package com.example.android.balls_fun;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    TextView balls_funTextView;
+    Button easyButton, mediumButton, difficultButton, highScoresButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // requesting to turn the title OFF
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // making it full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // set MainGamePanel as View
-        setContentView(new MainGamePanel(this));
-        Log.d(TAG,"View added");
+        setContentView(R.layout.activity_main);
+        setIDs();
+        setOnClickListeners();
     }
 
-    @Override
-    protected void onDestroy(){
-        Log.d(TAG,"Destroying...");
-        super.onDestroy();
+    public void setIDs(){
+        balls_funTextView = (TextView)findViewById(R.id.balls_funTextView);
+        easyButton = (Button)findViewById(R.id.easyButton);
+        mediumButton= (Button)findViewById(R.id.mediumButton);
+        difficultButton = (Button)findViewById(R.id.difficultButton);
+        highScoresButton = (Button)findViewById(R.id.highScoreButton);
     }
 
-    @Override
-    protected void onStop(){
-        Log.d(TAG,"Stopping..");
-        super.onStop();
+    public void setOnClickListeners(){
+        easyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(),StartGameActivity.class);
+                intent.putExtra("numberOfBalls","3");
+                startActivity(intent);
+            }
+        });
+
+        mediumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(),StartGameActivity.class);
+                intent.putExtra("numberOfBalls","4");
+                startActivity(intent);
+            }
+        });
+
+        difficultButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(),StartGameActivity.class);
+                intent.putExtra("numberOfBalls","5");
+                startActivity(intent);
+            }
+        });
+
+        highScoresButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 }

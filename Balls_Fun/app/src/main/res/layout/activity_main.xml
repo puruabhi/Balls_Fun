@@ -2,16 +2,79 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.balls_fun.MainActivity">
+    tools:context="com.example.android.balls_fun.StartGameActivity"
+    >
 
-    <TextView
+    <Button
+        android:text="High Scores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/highScoreButton"
+        android:fontFamily="cursive"
+        android:textStyle="normal|bold"
+        style="@android:style/Widget.Button"
+        android:textSize="24sp"
+        android:layout_marginBottom="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Difficult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/difficultButton"
+        android:textSize="24sp"
+        android:fontFamily="cursive"
+        android:textStyle="normal|bold"
+        style="@android:style/Widget.Button"
+        android:layout_marginBottom="134dp"
+        android:layout_above="@id/highScoreButton"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mediumButton"
+        android:textSize="24sp"
+        android:textStyle="normal|bold"
+        android:fontFamily="cursive"
+        style="@android:style/Widget.Button"
+        android:layout_marginBottom="60dp"
+        android:layout_alignBottom="@id/difficultButton"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Easy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/easyButton"
+        style="@android:style/Widget.Button"
+        android:textSize="24sp"
+        android:fontFamily="cursive"
+        android:textStyle="normal|bold"
+        android:layout_marginBottom="60dp"
+        android:layout_alignBottom="@id/mediumButton"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Balls Fun"
+        android:textStyle="normal|bold|italic"
+        android:textSize="72sp"
+        android:textAlignment="center"
+        android:fontFamily="cursive"
+        android:id="@+id/balls_funTextView"
+        android:textColor="@android:color/white"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

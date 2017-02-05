@@ -35,13 +35,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private Ball ball;
     private ArrayList<MovingBall> movingBallArrayList;
 
-    private int numberOfBalls = 5;
+    private int numberOfBalls;
 
     Context context;
 
-    public MainGamePanel(Context context) {
+    public MainGamePanel(Context context, int numberOfBalls) {
         super(context);
         this.context = context;
+        this.numberOfBalls = numberOfBalls;
         // adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
         // create ball and load bitmap
@@ -173,5 +174,17 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private float getDistance(int x1,int y1, int x2, int y2){
         return (float)Math.sqrt(Math.pow(x1-x2,2)+ Math.pow(y1-y2,2));
+    }
+
+    public void destroyThread(){
+        Activity StartGameActivity = (Activity)context;
+        StartGameActivity.finish();
+        boolean retry = true;
+        while(retry){
+            try {
+                thread.stop();
+                retry = false;
+            }catch (Exception e){}
+        }
     }
 }
