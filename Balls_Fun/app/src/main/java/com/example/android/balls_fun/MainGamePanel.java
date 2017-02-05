@@ -16,6 +16,8 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.CursorAnchorInfo;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by abhishek on 03-02-2017.
  */
@@ -31,7 +33,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private MainThread thread;
     private Ball ball;
-    private MovingBall movingBall;
+    private ArrayList<MovingBall> movingBallArrayList;
 
     Context context;
 
@@ -45,12 +47,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         thread = new MainThread(getHolder(),this);
         // make the GamePanel focusable so it can handle events
         setFocusable(true);
+        movingBallArrayList = new ArrayList<>();
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         ball = new Ball(getBitmap(R.drawable.ball4),50,50);
+        MovingBall movingBall = new MovingBall(getBitmap(R.drawable.ball5),getWidth()/2,getHeight()/2,getWidth(),getHeight());
+        movingBallArrayList.add(movingBall);
         movingBall = new MovingBall(getBitmap(R.drawable.ball5),getWidth()/2,getHeight()/2,getWidth(),getHeight());
+        movingBallArrayList.add(movingBall);
         thread.setRunning(true);
         thread.start();
 
@@ -98,7 +104,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             } else {
                 Log.d(TAG, "X: " + getX() + ", Y: " + getY());
             }
-            Toast.makeText(context,"Width: "+movingBall.getWIDTH()+" Height: "+movingBall.getHEIGHT(),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context,"Width: "+movingBallArrayList.get(0).getWIDTH()+" Height: "
+            //        +movingBallArrayList.get(0).getHEIGHT(),Toast.LENGTH_SHORT).show();
         }
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             // the gestures
@@ -122,10 +129,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             canvas.drawColor(Color.BLACK);
             ball.draw(canvas);
             //System.out.println(getWidth());
-            if(!checkCollision()) {
-                movingBall.move();
+            for(int i=0;i<movingBallArrayList.size();i++) {
+                if (!checkCollision(movingBallArrayList.get(i))) {
+                    movingBallArrayList.get(i).move();
+                }
+                movingBallArrayList.get(i).draw(canvas);
             }
-            movingBall.draw(canvas);
             displayFps(canvas, avgFPS);
         }
     }
@@ -153,7 +162,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         return bitmap;
     }
 
-    private boolean checkCollision(){
+    private boolean checkCollision(MovingBall movingBall){
         boolean check = false;
         float distance = getDistance(movingBall.getX(),movingBall.getY(),ball.getX(),ball.getY());
         if(distance <= movingBall.getRadius()+ball.getRadius()) check = true;

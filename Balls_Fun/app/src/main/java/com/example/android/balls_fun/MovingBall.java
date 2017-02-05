@@ -132,6 +132,9 @@ public class MovingBall {
         x += velocity*Math.cos(movingDirection);
         y += velocity*Math.sin(movingDirection);
 
+        System.out.println(x);
+        System.out.println(y);
+
         if(y<=(ball.getHeight())/2) movingDirection = 2 * (float) Math.PI - movingDirection;
         if (x <= (ball.getWidth()/2)) {
             movingDirection = (float) Math.PI - movingDirection ;
