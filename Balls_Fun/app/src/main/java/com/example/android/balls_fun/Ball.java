@@ -13,10 +13,13 @@ public class Ball {
     private int y;
     private boolean touched;
 
+    private int radius;
+
     public Ball(Bitmap bitmap, int x, int y) {
         this.bitmap = bitmap;
         this.x = x;
         this.y = y;
+        radius = bitmap.getHeight()/2;
     }
 
     public Bitmap getBitmap() {
@@ -49,6 +52,10 @@ public class Ball {
 
     public void setTouched(boolean touched) {
         this.touched = touched;
+    }
+
+    public int getRadius() {
+        return radius;
     }
 
     public void draw(Canvas canvas){

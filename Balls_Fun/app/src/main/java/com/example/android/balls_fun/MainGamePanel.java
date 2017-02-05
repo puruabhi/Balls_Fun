@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.CursorAnchorInfo;
+import android.widget.Toast;
 
 /**
  * Created by abhishek on 03-02-2017.
@@ -30,13 +31,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private MainThread thread;
     private Ball ball;
+    private MovingBall movingBall;
+
+    Context context;
 
     public MainGamePanel(Context context) {
         super(context);
+        this.context = context;
         // adding the callback (this) to the surface holder to intercept events
         getHolder().addCallback(this);
         // create ball and load bitmap
-        ball = new Ball(getBitmap(R.drawable.ball4),50,50);
         // create the game loop thread
         thread = new MainThread(getHolder(),this);
         // make the GamePanel focusable so it can handle events
@@ -45,7 +49,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
+        ball = new Ball(getBitmap(R.drawable.ball4),50,50);
+        movingBall = new MovingBall(getBitmap(R.drawable.ball5),getWidth()/2,getHeight()/2,getWidth(),getHeight());
         thread.setRunning(true);
         thread.start();
 
@@ -93,6 +98,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             } else {
                 Log.d(TAG, "X: " + getX() + ", Y: " + getY());
             }
+            Toast.makeText(context,"Width: "+movingBall.getWIDTH()+" Height: "+movingBall.getHEIGHT(),Toast.LENGTH_SHORT).show();
         }
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             // the gestures
@@ -112,15 +118,22 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void render(Canvas canvas){
-        canvas.drawColor(Color.WHITE);
-        ball.draw(canvas);
-        displayFps(canvas, avgFPS);
+        if(canvas!=null) {
+            canvas.drawColor(Color.BLACK);
+            ball.draw(canvas);
+            //System.out.println(getWidth());
+            if(!checkCollision()) {
+                movingBall.move();
+            }
+            movingBall.draw(canvas);
+            displayFps(canvas, avgFPS);
+        }
     }
 
     private void displayFps(Canvas canvas, String fps){
         if(canvas != null && fps != null){
             Paint paint = new Paint();
-            paint.setARGB(255,0,0,0);
+            paint.setARGB(255,255,255,255);
             canvas.drawText(fps, this.getWidth() - 100, 20, paint);
         }
     }
@@ -138,5 +151,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    private boolean checkCollision(){
+        boolean check = false;
+        float distance = getDistance(movingBall.getX(),movingBall.getY(),ball.getX(),ball.getY());
+        if(distance <= movingBall.getRadius()+ball.getRadius()) check = true;
+        return check;
+    }
+
+    private float getDistance(int x1,int y1, int x2, int y2){
+        return (float)Math.sqrt(Math.pow(x1-x2,2)+ Math.pow(y1-y2,2));
     }
 }
