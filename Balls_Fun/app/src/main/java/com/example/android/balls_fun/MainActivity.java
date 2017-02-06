@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(),StartGameActivity.class);
-                intent.putExtra("numberOfBalls","3");
+                intent.putExtra("numberOfBalls","2");
                 startActivity(intent);
             }
         });
@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(),StartGameActivity.class);
-                intent.putExtra("numberOfBalls","4");
+                intent.putExtra("numberOfBalls","3");
                 startActivity(intent);
             }
         });
@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(),StartGameActivity.class);
-                intent.putExtra("numberOfBalls","5");
+                intent.putExtra("numberOfBalls","4");
                 startActivity(intent);
             }
         });

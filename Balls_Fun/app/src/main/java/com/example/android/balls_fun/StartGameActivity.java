@@ -10,6 +10,7 @@ public class StartGameActivity extends Activity {
 
     private static final String TAG = StartGameActivity.class.getSimpleName();
     private MainGamePanel mainGamePanel;
+    private MainThread thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class StartGameActivity extends Activity {
         String intentData = getIntent().getStringExtra("numberOfBalls");
         numberOfBalls = Integer.parseInt(intentData);
         mainGamePanel = new MainGamePanel(this,numberOfBalls);
+        thread = mainGamePanel.getThread();
         setContentView(mainGamePanel);
         Log.d(TAG,"View added");
     }
@@ -31,12 +33,17 @@ public class StartGameActivity extends Activity {
     protected void onDestroy(){
         Log.d(TAG,"Destroying...");
         super.onDestroy();
+        if(!thread.isInterrupted()){
+            thread.interrupt();
+        }
         //finish();
     }
 
     @Override
     public void onBackPressed(){
-        mainGamePanel.destroyThread();
+        mainGamePanel.stopThread();
+        mainGamePanel = null;
+        finish();
     }
 
     @Override
