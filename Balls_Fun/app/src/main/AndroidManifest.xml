@@ -10,6 +10,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".StartGameActivity">
         </activity>
+        <activity android:name=".HighScoreActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

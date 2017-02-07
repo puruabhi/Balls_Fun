@@ -42,7 +42,6 @@ public class StartGameActivity extends Activity {
     @Override
     public void onBackPressed(){
         mainGamePanel.stopThread();
-        mainGamePanel = null;
         finish();
     }
 

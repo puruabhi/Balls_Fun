@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.android.balls_fun.StartGameActivity"
+    android:background="@drawable/highscorebg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="High Scores"
+        android:fontFamily="cursive"
+        android:textSize="36sp"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/highscores"
+        android:textColor="@android:color/background_light" />
+
+    <TextView
+        android:text="Easy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/highscores"
+        android:layout_toStartOf="@id/highscores"
+        android:layout_marginTop="80dp"
+        android:id="@+id/easyscore"
+        android:textSize="36sp"
+        android:fontFamily="cursive"
+        android:textStyle="normal|bold"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:text="Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/easyscore"
+        android:layout_marginTop="80dp"
+        android:id="@+id/mediumscore"
+        android:textSize="36sp"
+        android:fontFamily="cursive"
+        android:layout_alignParentLeft="true"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:text="Difficult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mediumscore"
+        android:layout_marginTop="80dp"
+        android:id="@+id/difficultscore"
+        android:fontFamily="cursive"
+        android:textSize="36sp"
+        android:textStyle="normal|bold"
+        android:layout_alignParentLeft="true"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:text="score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/difficultscore"
+        android:layout_toEndOf="@id/highscores"
+        android:id="@+id/difficult_value"
+        android:layout_alignParentRight="true"
+        android:fontFamily="cursive"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:text="score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/medium_value"
+        android:fontFamily="cursive"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        android:layout_above="@+id/difficultscore"
+        android:layout_alignStart="@+id/difficult_value"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:text="score"
+        android:layout_height="wrap_content"
+        android:id="@+id/easy_value"
+        android:layout_width="wrap_content"
+        android:fontFamily="cursive"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        android:layout_above="@+id/mediumscore"
+        android:layout_toEndOf="@+id/highscores"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

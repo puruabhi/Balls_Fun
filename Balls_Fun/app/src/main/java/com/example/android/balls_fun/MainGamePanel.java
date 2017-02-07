@@ -1,7 +1,10 @@
 package com.example.android.balls_fun;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -15,6 +18,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.CursorAnchorInfo;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,17 +43,17 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private ArrayList<MovingBall> movingBallArrayList;
 
     private int numberOfBalls;
+    private boolean gameOver = false;
 
     long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
 
-    Handler handler;
     int Seconds, Minutes, MilliSeconds ;
-    TextView textView ;
     private int timeCheck = 0;
     private int timeStop = 1;
     private boolean startGame = false;
-    private int velocity= 20;
-    Context context;
+    private int velocity= 15;
+    private Context context;
+    private String score;
 
     public MainGamePanel(Context context, int numberOfBalls) {
         super(context);
@@ -68,6 +72,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         ball = new Ball(getBitmap(R.drawable.ball4),getWidth()/2,getHeight()/2);
+        float movingDirection = (float)(Math.PI/4);
         for(int i=0;i<numberOfBalls;i++){
             Bitmap movingBallBitmap = getBitmap(R.drawable.ball5);
             int height,width;
@@ -75,18 +80,22 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 case 0:
                     height = 0+(movingBallBitmap.getHeight()/2);
                     width = 0+(movingBallBitmap.getHeight()/2);
+                    movingDirection = (float)((Math.PI/(float)36)+(Math.random()*Math.PI*((float)8/(float)18)));
                     break;
                 case 1:
                     height = getHeight()-(movingBallBitmap.getHeight()/2);
                     width = getWidth()-(movingBallBitmap.getHeight()/2);
+                    movingDirection = (float)((Math.PI+(Math.PI/(float)36))+(Math.random()*Math.PI*((float)8/(float)18)));
                     break;
                 case 2:
                     height = 0+(movingBallBitmap.getHeight()/2);
                     width = getWidth()-(movingBallBitmap.getHeight()/2);
+                    movingDirection = (float)(((Math.PI/(float)2)+(Math.PI/(float)36))+(Math.random()*Math.PI*((float)8/(float)18)));
                     break;
                 case 3:
                     height = getHeight()-(movingBallBitmap.getHeight()/2);
                     width = 0+(movingBallBitmap.getHeight()/2);
+                    movingDirection = (float)(((3*Math.PI/(float)2)+(Math.PI/(float)36))+(Math.random()*Math.PI*((float)8/(float)18)));
                     break;
                 default:
                     height = 0+(movingBallBitmap.getHeight()/2);
@@ -94,7 +103,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
             }
 
-            MovingBall movingBall = new MovingBall(movingBallBitmap,width,height,getWidth(),getHeight(),velocity);
+            MovingBall movingBall = new MovingBall(movingBallBitmap,width,height,getWidth(),getHeight(),movingDirection,velocity);
             movingBallArrayList.add(movingBall);
         }
         thread.setRunning(true);
@@ -144,6 +153,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             ball.handleActionDown(x, y);
+            if(gameOver){
+                ((Activity)getContext()).finish();
+            }
             if(startGame) {
                 // delegating event handling to the ball
                 /*if (event.getY() > getHeight() - 50) {
@@ -152,8 +164,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 } else {
                     Log.d(TAG, "X: " + getX() + ", Y: " + getY());
                 }*/
-                Toast.makeText(context,""+startGame,Toast.LENGTH_SHORT).show();
-                System.out.println(startGame);
+                //Toast.makeText(context,""+startGame,Toast.LENGTH_SHORT).show();
+                //System.out.println(startGame);
             }
             else {
                 startGame = true;
@@ -191,15 +203,17 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 for (int i = 0; i < movingBallArrayList.size(); i++) {
                     if (movingBallArrayList.get(i) != null) {
                         if (!checkCollision(movingBallArrayList.get(i))) {
-                            System.out.println(startGame);
+                            //System.out.println(startGame);
                             if(startGame) {
                                 movingBallArrayList.get(i).setVelocity(velocity);
                                 movingBallArrayList.get(i).move();
                             }
                         } else {
                             timeStop = 1;
+                            gameOver = true;
+                            updateDatabase();
                             thread.setRunning(false);
-                            ((Activity)getContext()).finish();
+                            //((Activity)getContext()).finish();
                         }
                         movingBallArrayList.get(i).draw(canvas);
                     }
@@ -272,14 +286,98 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
     }
     private void displayTime(Canvas canvas, String time) {
+        score = time;
         if (canvas != null /*&& time != null*/) {
             Paint paint = new Paint();
             paint.setARGB(255, 255, 255, 255);
             paint.setTextSize(50);
-            canvas.drawText(time, this.getWidth() - 220, 70, paint);
+            if(!gameOver) {
+                canvas.drawText(time, this.getWidth() - 220, 70, paint);
+            }
+            else{
+                canvas.drawText("Your Score  "+time, this.getWidth()/2 - 215, this.getHeight()/2+60, paint);
+            }
         }
     }
 
+    public void showGameOver(Canvas canvas){
+        if (canvas != null && gameOver) {
+            Paint paint = new Paint();
+            paint.setARGB(255, 255, 255, 255);
+            paint.setTextSize(75);
+            canvas.drawText("GAME OVER", this.getWidth()/2-200, this.getHeight()/2, paint);
+        }
+    }
+
+    private void updateDatabase(){
+        DatabaseHandler databaseHandler = new DatabaseHandler(context);
+        Cursor cursor = databaseHandler.getInfo(databaseHandler);
+        String [] selectionArray = {TableData.TableInfo.EASY, TableData.TableInfo.MEDIUM, TableData.TableInfo.HARD};
+        if(cursor.moveToFirst()){
+            System.out.println("Database present");
+            String databaseScore = cursor.getString(numberOfBalls-2);
+            System.out.println("Score: "+databaseScore);
+            if(databaseScore.equals("")) {
+                System.out.println("Database not present");
+                System.out.println("Updating Database");
+                String newScore = "" + Minutes + ":" + Seconds + ":" + MilliSeconds;
+                SQLiteDatabase db = databaseHandler.getWritableDatabase();
+                String selection = selectionArray[numberOfBalls - 2] + " LIKE ?";
+                String[] args = {databaseScore};
+                ContentValues values = new ContentValues();
+                values.put(selectionArray[numberOfBalls - 2], newScore);
+                db.update(TableData.TableInfo.TABLE_NAME, values, selection, args);
+                System.out.println("Database updated");
+            }
+            else{
+                if (compareScore(databaseScore)) {
+                    System.out.println("Updating Database");
+                    String newScore = "" + Minutes + ":" + Seconds + ":" + MilliSeconds;
+                    SQLiteDatabase db = databaseHandler.getWritableDatabase();
+                    String selection = selectionArray[numberOfBalls - 2] + " LIKE ?";
+                    String[] args = {databaseScore};
+                    ContentValues values = new ContentValues();
+                    values.put(selectionArray[numberOfBalls - 2], newScore);
+                    db.update(TableData.TableInfo.TABLE_NAME, values, selection, args);
+                    System.out.println("Database updated");
+                }
+            }
+        }
+        else{
+            System.out.println("Database not present");
+            databaseHandler.addInfo(databaseHandler,score,numberOfBalls-2);
+            System.out.println("Database Added");
+        }
+    }
+
+    private boolean compareScore(String databaseScore){
+        boolean greater = false;
+        int i = 0;
+        String min = "", sec = "", msec = "";
+        while (databaseScore.charAt(i)!=':'){
+            min += databaseScore.charAt(i);
+            i++;
+        }
+        i++;
+        while (databaseScore.charAt(i)!=':'){
+            sec+=databaseScore.charAt(i);
+            i++;
+        }
+        i++;
+        while(i<databaseScore.length()){
+            msec += databaseScore.charAt(i);
+            i++;
+        }
+        int Min = Integer.parseInt(min), Sec = Integer.parseInt(sec), Msec = Integer.parseInt(msec);
+        if(Minutes>Min)greater = true;
+        else if(Minutes==Min){
+            if(Seconds>Sec)greater = true;
+            else if(Seconds==Sec){
+                if(MilliSeconds>Msec) greater = true;
+            }
+        }
+        return greater;
+    }
     public void stopThread(){
         thread.setRunning(false);
     }

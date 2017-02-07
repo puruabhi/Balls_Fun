@@ -2,17 +2,24 @@ package com.example.android.balls_fun;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.ViewGroup.LayoutParams;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.text.Layout;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Gallery;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    TextView balls_funTextView;
+    TextView balls_funTextView,fun;
     Button easyButton, mediumButton, difficultButton, highScoresButton;
 
     @Override
@@ -64,7 +71,8 @@ public class MainActivity extends Activity {
         highScoresButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getBaseContext(),HighScoreActivity.class);
+                startActivity(intent);
             }
         });
     }
