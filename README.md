@@ -11,6 +11,7 @@ avoid contact of their blue ball with other red balls. If blue ball touch red
 ball, game will be over and time they survived will be their score.
 
 There are three levels in the game: 
+
 	1. Easy		: Two red balls are on screen.
 	2. Medium	: Three red balls are on screen.
 	3. Difficult : Four red balls are on screen.
