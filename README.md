@@ -15,3 +15,7 @@ There are three levels in the game:
 	1. Easy		: Two red balls are on screen.
 	2. Medium	: Three red balls are on screen.
 	3. Difficult : Four red balls are on screen.
+
+Download the .apk file from [here](https://drive.google.com/file/d/0BxRmGediXa1heldPdjNRRGd2UEk/view?usp=sharing)
+
+Enjoy!
